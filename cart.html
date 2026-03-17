@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的购物车 - 赤壁蜜薯</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Microsoft YaHei,sans-serif}
+body{background:#f7f7f7}
+.header{background:#fff;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+.logo{font-size:20px;font-weight:bold;color:#e63946}
+.nav a{margin-left:18px;text-decoration:none;color:#333;font-size:14px}
+.section{padding:20px;background:#fff;margin-top:10px}
+.title{font-size:18px;font-weight:bold;margin-bottom:15px}
+.cart-item{display:flex;align-items:center;padding:15px;border-bottom:1px solid #eee}
+.check{width:20px;height:20px;border:1px solid #ddd;border-radius:3px;margin-right:10px;cursor:pointer}
+.check.active{background:#e63946;border-color:#e63946;position:relative}
+.check.active::after{content:"✓";color:#fff;font-size:12px;position:absolute;top:1px;left:3px}
+.pic{width:80px;height:80px;background:#fcefee;border-radius:6px;margin-right:10px}
+.info{flex:1}
+.info h3{font-size:15px;margin-bottom:5px}
+.info p{font-size:12px;color:#666;margin-bottom:5px}
+.price{color:#e63946;font-weight:bold}
+.count{display:flex;align-items:center;border:1px solid #ddd;border-radius:4px;width:90px;height:30px}
+.count button{width:30px;height:30px;border:none;background:#f5f5f5;font-size:16px;cursor:pointer}
+.count input{width:30px;height:30px;border:none;text-align:center;outline:none}
+.del{color:#999;font-size:12px;margin-left:10px;cursor:pointer}
+.total{padding:15px;display:flex;justify-content:space-between;align-items:center;background:#fafafa;margin-top:10px}
+.total-price{color:#e63946;font-size:16px;font-weight:bold}
+.pay-btn{padding:10px 20px;background:#e63946;color:#fff;border:none;border-radius:6px;cursor:pointer}
+.empty{text-align:center;padding:50px 0;color:#999;font-size:14px}
+.footer{text-align:center;padding:20px;font-size:12px;color:#999;background:#fff;margin-top:10px}
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="logo">乡味源 · 赤壁蜜薯</div>
+<div class="nav">
+<a href="index.html">首页</a>
+<a href="product.html">商品</a>
+<a href="trace.html">溯源</a>
+<a href="about.html">关于我们</a>
+<a href="login.html">登录/注册</a>
+<a href="cart.html">购物车</a>
+<a href="order.html">我的订单</a>
+</div>
+</div>
+
+<div class="section">
+<div class="title">我的购物车</div>
+
+<div class="cart-item">
+<div class="check active"></div>
+<div class="pic"></div>
+<div class="info">
+<h3>赤壁蜜薯 5斤装</h3>
+<p>砂硼钙土种植 | 软糯无丝</p>
+<div class="price">¥29.9</div>
+</div>
+<div class="count">
+<button class="minus">-</button>
+<input type="text" value="1" class="num-input">
+<button class="plus">+</button>
+</div>
+<div class="del">删除</div>
+</div>
+
+<div class="total">
+<div>合计：<span class="total-price">¥29.9</span></div>
+<button class="pay-btn">去结算</button>
+</div>
+
+</div>
+
+<div class="footer">乡味源 © 赤壁蜜薯溯源电商平台 三创赛项目演示</div>
+
+<script>
+// 获取元素
+const minusBtn = document.querySelector('.minus');
+const plusBtn = document.querySelector('.plus');
+const numInput = document.querySelector('.num-input');
+const totalPrice = document.querySelector('.total-price');
+const checkBox = document.querySelector('.check');
+const delBtn = document.querySelector('.del');
+const singlePrice = 29.9; // 单品价格
+
+// 减数量
+minusBtn.addEventListener('click', function() {
+    let num = parseInt(numInput.value);
+    if (num > 1) {
+        num--;
+        numInput.value = num;
+        updateTotal(); // 更新总价
+    }
+});
+
+// 加数量
+plusBtn.addEventListener('click', function() {
+    let num = parseInt(numInput.value);
+    num++;
+    numInput.value = num;
+    updateTotal(); // 更新总价
+});
+
+// 手动输入数量（限制只能输入数字，且最小为1）
+numInput.addEventListener('input', function() {
+    let num = parseInt(this.value);
+    if (isNaN(num) || num < 1) {
+        this.value = 1;
+    }
+    updateTotal(); // 更新总价
+});
+
+// 勾选/取消勾选
+checkBox.addEventListener('click', function() {
+    this.classList.toggle('active');
+    updateTotal(); // 更新总价
+});
+
+// 删除购物车商品
+delBtn.addEventListener('click', function() {
+    if (confirm('确定要删除该商品吗？')) {
+        document.querySelector('.cart-item').remove();
+        totalPrice.textContent = '¥0.0';
+    }
+});
+
+// 更新总价函数
+function updateTotal() {
+    if (checkBox.classList.contains('active')) {
+        let num = parseInt(numInput.value);
+        let total = (singlePrice * num).toFixed(1); // 保留1位小数
+        totalPrice.textContent = '¥' + total;
+    } else {
+        totalPrice.textContent = '¥0.0';
+    }
+}
+</script>
+
+</body>
+</html>
